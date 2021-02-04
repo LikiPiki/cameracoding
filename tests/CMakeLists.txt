@@ -1,11 +1,11 @@
 
 find_package(GTest REQUIRED)
 
-add_executable(testing
-	simple.cpp
-	)
+add_executable(test
+    simple.cpp
+    )
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
-target_link_libraries(testing ${GTEST_LIBRARIES} pthread)
+target_link_libraries(test ${GTEST_LIBRARIES} pthread)
 

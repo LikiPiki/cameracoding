@@ -12,6 +12,8 @@ CameraCoding:
         - cd ../build
         - cmake ..
         - make
-        - ./tests/testing
 
+    stage: test
+    script:
+        - ./tests/test
 
