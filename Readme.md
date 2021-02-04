@@ -1,16 +1,8 @@
 # Camera coding project
 
-How to build
-```bash
-git submodule init
-git submodule update
-cd googletest
-cmake ..
-make install
-cd ..
-cmake .
-make
-```
+Camera Coding is simple video stream coder/decoder program.
+
+Please read project wiki for details: [WIKI](https://gitlab.com/likipiki/cameracoding/-/wikis/home)
 
 ## Roadmap
 - [x] DCT/IDCT transformation
