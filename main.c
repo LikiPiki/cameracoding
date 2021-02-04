@@ -5,10 +5,10 @@
 #define PI 3.14159265358979323846
 
 // вывод матрицы
-void printMatrix(double matrix[][SIZE], int len) {
+void printMatrix(int matrix[][SIZE], int len) {
     for (int i = 0; i < len; i++) {
         for (int j = 0; j < len; j++) {
-            printf("%3.3f ", matrix[i][j]);
+            printf("%d ", matrix[i][j]);
         }
         printf("\n");
     }
@@ -23,7 +23,7 @@ double alpha(int u) {
     }
 }
 
-double getDCT(double u, double v, double matrix[][SIZE], int len) {
+double getDCT(int u, double v, int matrix[][SIZE], int len) {
     double sum = 0;
     for (double x = 0; x < len; x++) {
         for (double y = 0; y < len; y++) {
@@ -33,7 +33,7 @@ double getDCT(double u, double v, double matrix[][SIZE], int len) {
     return sum;
 }
 
-void DCT(double result[][SIZE], double matrix[][SIZE], int len) {
+void DCT(int result[][SIZE], int matrix[][SIZE], int len) {
     for (int u = 0; u < len; u++) {
         for (int v = 0; v < len; v++) {
             result[u][v] = 0.25 * alpha(u) * alpha(v) * getDCT((double) u, (double) v, matrix, len);
@@ -41,7 +41,7 @@ void DCT(double result[][SIZE], double matrix[][SIZE], int len) {
     }
 }
 
-double getIDCT(double DCTMatrix[][SIZE], double x, double y, int len) {
+double getIDCT(int DCTMatrix[][SIZE], double x, double y, int len) {
     double sum = 0;
     for (int u = 0; u < len; u++) {
         for (int v = 0; v < len; v++) {
@@ -51,7 +51,7 @@ double getIDCT(double DCTMatrix[][SIZE], double x, double y, int len) {
     return sum;
 }
 
-void IDCT(double result[][SIZE], double matrix[][SIZE], int len) {
+void IDCT(int result[][SIZE], int matrix[][SIZE], int len) {
     for (int x = 0; x < len; x++) {
         for (int y = 0; y < len; y++) {
             result[x][y] = 0.25 * getIDCT(matrix, x, y, len);
@@ -62,7 +62,7 @@ void IDCT(double result[][SIZE], double matrix[][SIZE], int len) {
 
 int main(int argc, char *argv[]) {
 
-    double matrix[SIZE][SIZE] = {
+    int matrix[SIZE][SIZE] = {
         { -76, -73, -67, -62, -58, -67, -64, -55 },
         { -65, -69, -73, -38, -19, -43, -59, -56 },
         { -66, -69, -60, -15,  16, -24, -62, -55 },
@@ -76,13 +76,13 @@ int main(int argc, char *argv[]) {
     printf("The Base matrix:\n");
     printMatrix(matrix, SIZE);
 
-    double result[SIZE][SIZE] = {0};
+    int result[SIZE][SIZE] = {0};
     DCT(result, matrix, SIZE);
 
     printf("The DCT:\n");
     printMatrix(result, SIZE);
 
-    double idcMatrix[SIZE][SIZE] = {0};
+    int idcMatrix[SIZE][SIZE] = {0};
     IDCT(idcMatrix, result, SIZE);
     printf("The IDCT:\n");
     printMatrix(idcMatrix, SIZE);
