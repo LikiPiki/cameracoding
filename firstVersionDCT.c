@@ -1,5 +1,7 @@
 /* 
  * This file include the basic DCT transformations with matrix [SIZE]x[SIZE]
+ *
+ * This is 0.1 version of project code, plz use main.c file
  */
 #include <stdio.h>
 #include <math.h>

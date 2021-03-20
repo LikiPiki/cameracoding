@@ -12,5 +12,7 @@ CameraCoding:
         - cd ../build
         - cmake ..
         - make
-        - ./tests/test
+
+        # TODO: Run tests in CI/CD
+        # - ./tests/test
 
