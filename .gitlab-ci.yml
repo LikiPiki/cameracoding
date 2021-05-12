@@ -3,6 +3,7 @@ CameraCoding:
     before_script:
         - apt-get update --yes
         - apt-get install --yes cmake
+
     script:
         - git submodule init
         - git submodule update
@@ -11,7 +12,7 @@ CameraCoding:
         - make install
         - cd ../build
         - cmake ..
-        - make
+        - make -j12
 
         # TODO: Run tests in CI/CD
         # - ./tests/test

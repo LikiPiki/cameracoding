@@ -1,22 +1,12 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.10)
 
 project(coding C CXX)
 
-# set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# enable_testing()
+include(${CMAKE_CURRENT_LIST_DIR}/src/src.cmake)
 
-set(Sources
-    main.c
-    )
+add_executable(${PROJECT_NAME} ${SRC})
 
-add_subdirectory(tests)
-
-add_executable(${PROJECT_NAME} ${Sources})
-
-# link with math library
-target_link_libraries(${PROJECT_NAME} m)
-
-
+target_link_libraries(${PROJECT_NAME} PRIVATE m)
