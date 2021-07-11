@@ -35,59 +35,66 @@ void DCT_16x16( int *x );
 void IDCT_16x16( int *coef, int *block );
 void show( int *x );
 
+
+/*
+ * Структура одного видеокадра
+ */
 typedef struct {
-    uint8_t y[FRAME_SIZE];
-    uint8_t u[FRAME_SIZE / 4];
-    uint8_t v[FRAME_SIZE / 4];
+	uint8_t y[FRAME_SIZE];
+	uint8_t u[FRAME_SIZE / 4];
+	uint8_t v[FRAME_SIZE / 4];
 } Frame;
 
+/*
+ * Чтение одного кадра
+ */
 void readFrame(FILE *fp, Frame *frame) {
-    if (fread(frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, fp) != FRAME_SIZE + FRAME_SIZE / 2) {
-        if (feof(fp)) {
-            printf("Premature end of file.");
-        } else printf("File read error.");
-    }
+	if (fread(frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, fp) != FRAME_SIZE + FRAME_SIZE / 2) {
+		if (feof(fp)) {
+			printf("Premature end of file.");
+		} else printf("File read error.");
+	}
 }
 
 void readFromFile() {
 	FILE *fp;
-    fp = fopen("../files/video1.yuv", "rb");
+	fp = fopen("../files/video1.yuv", "rb");
 
-    if (fp == NULL) {
-      perror("Error while opening the file.\n");
-      return;
-    }
+	if (fp == NULL) {
+	  perror("Error while opening the file.\n");
+	  return;
+	}
 
-    Frame frame;
-    readFrame(fp, &frame);
+	Frame frame;
+	readFrame(fp, &frame);
 
-    for (int i = 0; i < 100; i++) {
-        printf(" %d", frame.y[i]);
-    }
-    printf("\n\n");
+	for (int i = 0; i < 100; i++) {
+		printf(" %d", frame.y[i]);
+	}
+	printf("\n\n");
 
-    for (int i = 0; i < 100; i++) {
-        printf(" %d", frame.u[i]);
-    }
+	for (int i = 0; i < 100; i++) {
+		printf(" %d", frame.u[i]);
+	}
 
-    printf("\n\n");
+	printf("\n\n");
 
-    for (int i = 0; i < 100; i++) {
-        printf(" %d", frame.v[i]);
-    }
-    printf("\n\n");
+	for (int i = 0; i < 100; i++) {
+		printf(" %d", frame.v[i]);
+	}
+	printf("\n\n");
 
-    printf("%d %d %d", frame.y[FRAME_SIZE-1], frame.u[FRAME_SIZE / 4 - 1], frame.v[FRAME_SIZE / 4 - 1]);
-    fclose(fp);
+	printf("%d %d %d", frame.y[FRAME_SIZE-1], frame.u[FRAME_SIZE / 4 - 1], frame.v[FRAME_SIZE / 4 - 1]);
+	fclose(fp);
 }
 
 int main( void )
 {
-    /*
-     * Чтение бинарного видеофайла -- http://ultravideo.fi/#testsequences
-     * Bosphorus 1080ю 8bit, YUV, RAW
-     */
-    readFromFile();
+	/*
+	 * Чтение бинарного видеофайла -- http://ultravideo.fi/#testsequences
+	 * Bosphorus 1080ю 8bit, YUV, RAW
+	 */
+	readFromFile();
 
 	int block[16*16];
 	int iblock[16*16];
@@ -153,7 +160,7 @@ void DCT16x(int *data, int *spec)
 	for (k = 1; k < 16; k += 2)
 	{
 		spec[k] = (int)((g_aiT16[k][0] * O[0] + g_aiT16[k][1] * O[1] + g_aiT16[k][2] * O[2] + g_aiT16[k][3] * O[3] + 
-				    g_aiT16[k][4] * O[4] + g_aiT16[k][5] * O[5] + g_aiT16[k][6] * O[6] + g_aiT16[k][7] * O[7] + add) >> SHIFT_X);
+					g_aiT16[k][4] * O[4] + g_aiT16[k][5] * O[5] + g_aiT16[k][6] * O[6] + g_aiT16[k][7] * O[7] + add) >> SHIFT_X);
 	}
 }
 
@@ -201,7 +208,7 @@ void DCT16y( int *data, int *spec )
 	for (k = 1; k < 16; k += 2)
 	{
 		spec[k*16] = (int)((g_aiT16[k][0] * O[0]	+ g_aiT16[k][1] * O[1] + g_aiT16[k][2] * O[2] + g_aiT16[k][3] * O[3] + 
-				        g_aiT16[k][4] * O[4]	+ g_aiT16[k][5] * O[5] + g_aiT16[k][6] * O[6] + g_aiT16[k][7] * O[7] + add) >> SHIFT_Y);
+						g_aiT16[k][4] * O[4]	+ g_aiT16[k][5] * O[5] + g_aiT16[k][6] * O[6] + g_aiT16[k][7] * O[7] + add) >> SHIFT_Y);
 	}
 }
 
@@ -294,7 +301,7 @@ void IDCT16y(int *tmp, int *block )
 	for( k = 0; k < 4; k++ )
 	{
 		EO[k] = g_aiT16[ 2][k] * tmp[ 2*16] + g_aiT16[ 6][k] * tmp[ 6*16] + 
-			    g_aiT16[10][k] * tmp[10*16] + g_aiT16[14][k] * tmp[14*16];
+				g_aiT16[10][k] * tmp[10*16] + g_aiT16[14][k] * tmp[14*16];
 	}
 
 	EEO[0] = g_aiT16[4][0] * tmp[4*16] + g_aiT16[12][0] * tmp[12*16];
