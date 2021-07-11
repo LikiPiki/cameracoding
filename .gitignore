@@ -3,6 +3,7 @@ coding
 .DS_Store
 testing
 build
+files
 
 # Cmake ignoring 
 CMakeLists.txt.user

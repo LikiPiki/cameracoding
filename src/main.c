@@ -8,6 +8,10 @@
 #define INV_SHIFT_Y 7
 #define INV_SHIFT_X 12
 
+#define VIDEO_WIDTH 1920
+#define VIDEO_HEIGHT 1080
+#define FRAME_SIZE VIDEO_WIDTH * VIDEO_HEIGHT
+
 short g_aiT16[16][16] = {
 	{ 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64},
 	{ 90, 87, 80, 70, 57, 43, 25,  9, -9,-25,-43,-57,-70,-80,-87,-90},
@@ -31,10 +35,62 @@ void DCT_16x16( int *x );
 void IDCT_16x16( int *coef, int *block );
 void show( int *x );
 
+typedef struct {
+    uint8_t y[FRAME_SIZE];
+    uint8_t u[FRAME_SIZE / 4];
+    uint8_t v[FRAME_SIZE / 4];
+} Frame;
+
+void readFrame(FILE *fp, Frame *frame) {
+    if (fread(frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, fp) != FRAME_SIZE + FRAME_SIZE / 2) {
+        if (feof(fp)) {
+            printf("Premature end of file.");
+        } else printf("File read error.");
+    }
+}
+
+void readFromFile() {
+	FILE *fp;
+    fp = fopen("../files/video1.yuv", "rb");
+
+    if (fp == NULL) {
+      perror("Error while opening the file.\n");
+      return;
+    }
+
+    Frame frame;
+    readFrame(fp, &frame);
+
+    for (int i = 0; i < 100; i++) {
+        printf(" %d", frame.y[i]);
+    }
+    printf("\n\n");
+
+    for (int i = 0; i < 100; i++) {
+        printf(" %d", frame.u[i]);
+    }
+
+    printf("\n\n");
+
+    for (int i = 0; i < 100; i++) {
+        printf(" %d", frame.v[i]);
+    }
+    printf("\n\n");
+
+    printf("%d %d %d", frame.y[FRAME_SIZE-1], frame.u[FRAME_SIZE / 4 - 1], frame.v[FRAME_SIZE / 4 - 1]);
+    fclose(fp);
+}
+
 int main( void )
 {
+    /*
+     * Чтение бинарного видеофайла -- http://ultravideo.fi/#testsequences
+     * Bosphorus 1080ю 8bit, YUV, RAW
+     */
+    readFromFile();
+
 	int block[16*16];
-int iblock[16*16];
+	int iblock[16*16];
 	int i;
 
 

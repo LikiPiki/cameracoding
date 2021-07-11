@@ -1,14 +1,28 @@
-# Camera coding project
+# Дипломная работа по сжатию потока видео
 
-Camera Coding is simple video stream coder/decoder program.
+- [Дипломная работа по сжатию потока видео](#дипломная-работа-по-сжатию-потока-видео)
+  - [Тестовые файлы](#тестовые-файлы)
+  - [Сборка](#сборка)
 
-Please read project wiki for details: [WIKI](https://gitlab.com/likipiki/cameracoding/-/wikis/home)
+## Тестовые файлы
 
-## Roadmap
-- [ ] Integrate FDST code
-- [x] DCT/IDCT transformation
-- [x] Cmake integration
-- [ ] Docker container for testing
-- [ ] Replace double to integer in input/output matrix
-- [ ] Use fast DCT conversation
+Для тестового видео можно использовать любое видео с сайта http://ultravideo.fi/#testsequences со следующими параметрами:
 
+Видео Bosphorus
+- Resolution: 1080p
+- Bit depth: 8
+- Format: YUV
+- Container: RAW
+
+Файл нужно положить в `./files/video1.yuv`. Для просмотра видео можно использовать программу [YUView](https://github.com/IENT/YUView) (кросплатформенная).
+
+## Сборка
+
+Для сборки используется `cmake`.
+
+```
+cd build
+cmake ..
+make
+./coding # запуск
+```
