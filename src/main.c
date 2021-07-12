@@ -8,9 +8,14 @@
 #define INV_SHIFT_Y 7
 #define INV_SHIFT_X 12
 
+#define INPUT_FILE "../files/video1.yuv"
+#define OUTPUT_FILE "../files/out.yuv"
+
 #define VIDEO_WIDTH 1920
 #define VIDEO_HEIGHT 1080
 #define FRAME_SIZE VIDEO_WIDTH * VIDEO_HEIGHT
+#define QUANTIZATION_LEVEL 64
+
 
 short g_aiT16[16][16] = {
 	{ 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64},
@@ -56,9 +61,25 @@ void readFrame(FILE *fp, Frame *frame) {
 	}
 }
 
+/*
+ * Квантование блоков 16x16
+ */
+void quatizeBlock(int *block) {
+	for (int i = 0; i < 16*16; i++) {
+		block[i] /= QUANTIZATION_LEVEL;
+	}
+}
+
+/*
+ * Сохранение кадра в файл
+ */
+void saveToFile() {
+
+}
+
 void readFromFile() {
 	FILE *fp;
-	fp = fopen("../files/video1.yuv", "rb");
+	fp = fopen(INPUT_FILE, "rb");
 
 	if (fp == NULL) {
 	  perror("Error while opening the file.\n");
@@ -68,24 +89,41 @@ void readFromFile() {
 	Frame frame;
 	readFrame(fp, &frame);
 
-	for (int i = 0; i < 100; i++) {
-		printf(" %d", frame.y[i]);
-	}
-	printf("\n\n");
-
-	for (int i = 0; i < 100; i++) {
-		printf(" %d", frame.u[i]);
-	}
-
-	printf("\n\n");
-
-	for (int i = 0; i < 100; i++) {
-		printf(" %d", frame.v[i]);
-	}
-	printf("\n\n");
-
-	printf("%d %d %d", frame.y[FRAME_SIZE-1], frame.u[FRAME_SIZE / 4 - 1], frame.v[FRAME_SIZE / 4 - 1]);
 	fclose(fp);
+
+	int block[16*16];
+	int iblock[16*16];
+
+	int k = 0;
+	int fl = 0;
+	int lastk = 0;
+
+	for (int i = 0; i < 1920 / 16; i++) {
+		for (int j = 0; j < 1080 / 16; j++) {
+			int start = i * 16 + j * 16 * 1920;
+
+			for (int k = 0; k < (16 * 16); k++) {
+				block[k] = frame.y[start + (k % 16) + 1920 * (k / 16)];
+				lastk = start + (k % 16) + 1920 * (k / 16);
+			}
+
+		}
+	}
+	printf("last is %d", lastk);
+
+	// DCT_16x16(block);
+
+	// show(block);
+	// saveTofile(out, block);
+
+	// quatizeBlock(block);
+
+	// show(block);
+	// IDCT_16x16( block, iblock );
+
+	// show( iblock );
+	printf("--------------");
+
 }
 
 int main( void )
@@ -104,7 +142,7 @@ int main( void )
 	for( i = 0; i < 16*16; i++ )
 		block[i] = i;
 
-	show( block );
+	// show( block );
 
 	DCT_16x16( block );
 
@@ -112,7 +150,7 @@ int main( void )
 
 	IDCT_16x16( block, iblock );
 
-	show( iblock );
+	// show( iblock );
 
 	return 0;
 }
