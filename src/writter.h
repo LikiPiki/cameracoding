@@ -16,4 +16,4 @@ typedef struct {
 
 void readFrame(FILE *fp, Frame *frame);
 void quatizeBlock(int *block);
-void readFromFile();
+void writter_coder();

@@ -26,7 +26,7 @@ void quatizeBlock(int *block) {
 	}
 }
 
-void readFromFile() {
+void writter_coder() {
 	FILE *fp;
 	fp = fopen(INPUT_FILE, "rb");
 
@@ -69,6 +69,7 @@ void readFromFile() {
 	}
 
 	// Дозаполняем оставшиеся блоки и пишем их файл
+	// TODO: tomorrow
 
 	// Записываем цветовые компоненты видео в файл
 	fwrite(frame.u, sizeof(int), FRAME_SIZE / 4, out);
@@ -76,17 +77,5 @@ void readFromFile() {
 
 	fclose(out);
 
-	// DCT_16x16(block);
-
-	// show(block);
-	// saveTofile(out, block);
-
-	// quatizeBlock(block);
-
-	// show(block);
-	// IDCT_16x16( block, iblock );
-
-	// show( iblock );
-	printf("--------------");
-
+	printf("\n--------------\n");
 }

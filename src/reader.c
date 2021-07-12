@@ -1,6 +1,5 @@
 #include <reader.h>
 
-
-void reader_read_data() {
-	printf("Reading data");
+void reader_decode() {
+	printf("Reading data from data file...\n");
 }
