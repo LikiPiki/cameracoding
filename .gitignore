@@ -1,6 +1,7 @@
 *.out
 coding
 .DS_Store
+.vscode
 testing
 build
 files

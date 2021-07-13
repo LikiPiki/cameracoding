@@ -68,8 +68,28 @@ void writter_coder() {
 		}
 	}
 
-	// Дозаполняем оставшиеся блоки и пишем их файл
-	// TODO: tomorrow
+	// Дозаполняем оставшиеся блоки кодируем их и пишем в файл
+	int startLast = 1920 * (1080 - 8);
+
+	for (int i = 0; i < 1080 / 16; i++) {
+		int start = startLast + i * 16;
+
+		// копируем половину блока
+		int k;
+		for (k = 0; k < (16 * 8); k++) {
+			block[k] = frame.y[start + (k % 16) + 1920 * (k / 16)];
+		}
+
+		int startI = k - 16;
+		// дублируем последнюю строку блока пока не заполним блок
+		for (int i = 0; i < (16 * 8); i++) {
+			block[k++] = block[startI + i % 16];
+		}
+
+		DCT_16x16(block);
+		fwrite(block, sizeof(int), 16*16, out);
+	}
+
 
 	// Записываем цветовые компоненты видео в файл
 	fwrite(frame.u, sizeof(int), FRAME_SIZE / 4, out);
