@@ -1,10 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "writter.h"
 #include "dct.h"
-
-#define INPUT_FILE "../files/video1.yuv"
-#define OUTPUT_FILE "../files/data"
 
 /*
  * Чтение одного кадра
@@ -35,8 +33,8 @@ void writter_coder() {
 	  return;
 	}
 
-	Frame frame;
-	readFrame(fp, &frame);
+	Frame *frame = (Frame *) malloc(sizeof(Frame));
+	readFrame(fp, frame);
 
 	fclose(fp);
 
@@ -59,7 +57,7 @@ void writter_coder() {
 			int start = i * 16 + j * 16 * 1920;
 
 			for (int k = 0; k < (16 * 16); k++) {
-				block[k] = frame.y[start + (k % 16) + 1920 * (k / 16)];
+				block[k] = frame->y[start + (k % 16) + 1920 * (k / 16)];
 			}
 
 			// Кодируем блок и пишем его в файл data
@@ -77,7 +75,7 @@ void writter_coder() {
 		// копируем половину блока
 		int k;
 		for (k = 0; k < (16 * 8); k++) {
-			block[k] = frame.y[start + (k % 16) + 1920 * (k / 16)];
+			block[k] = frame->y[start + (k % 16) + 1920 * (k / 16)];
 		}
 
 		int startI = k - 16;
@@ -90,12 +88,18 @@ void writter_coder() {
 		fwrite(block, sizeof(int), 16*16, out);
 	}
 
-
 	// Записываем цветовые компоненты видео в файл
-	fwrite(frame.u, sizeof(int), FRAME_SIZE / 4, out);
-	fwrite(frame.v, sizeof(int), FRAME_SIZE / 4, out);
+	fwrite(frame->u, sizeof(int), FRAME_SIZE / 4, out);
+	fwrite(frame->v, sizeof(int), FRAME_SIZE / 4, out);
 
 	fclose(out);
+
+    // Сохраняем кадр как отдельное видео для теста 
+	// out = fopen("../files/video.yuv", "wb");
+	// fwrite(&frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, out);
+
+	fclose(out);
+	free(frame);
 
 	printf("\n--------------\n");
 }

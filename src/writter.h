@@ -5,9 +5,6 @@
 
 #include "consts.h"
 
-/*
- * Структура одного видеокадра
- */
 typedef struct {
 	uint8_t y[FRAME_SIZE];
 	uint8_t u[FRAME_SIZE / 4];
