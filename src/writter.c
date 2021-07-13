@@ -39,7 +39,7 @@ void writter_coder() {
 	fclose(fp);
 
 	FILE *out;
-	out = fopen(OUTPUT_FILE, "wb");
+	out = fopen(DATA_FILE, "wb");
 
 	if (out == NULL) {
 	  perror("Error while opening the file data.\n");

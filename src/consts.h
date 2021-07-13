@@ -6,4 +6,5 @@
 
 // Названия файлов
 #define INPUT_FILE "../files/video1.yuv"
-#define OUTPUT_FILE "../files/data"
+#define DATA_FILE "../files/data"
+#define OUTPUT_FILE "../files/video.yuv"
