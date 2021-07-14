@@ -10,8 +10,8 @@
 void readFrame(FILE *fp, Frame *frame) {
 	if (fread(frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, fp) != FRAME_SIZE + FRAME_SIZE / 2) {
 		if (feof(fp)) {
-			printf("Premature end of file.");
-		} else printf("File read error.");
+			printf("Premature end of file (read_file).\n");
+		} else printf("File read error.\n");
 	}
 }
 
@@ -21,6 +21,28 @@ void readFrame(FILE *fp, Frame *frame) {
 void quatizeBlock(int *block) {
 	for (int i = 0; i < 16*16; i++) {
 		block[i] /= QUANTIZATION_LEVEL;
+	}
+}
+/*
+ * Деквантование блоков 16x16
+ */
+void dequatizeBlock(int *block) {
+	for (int i = 0; i < 16*16; i++) {
+		block[i] *= QUANTIZATION_LEVEL;
+	}
+}
+
+void copy_iblock_to_line(int *iblock, int blockNum, uint8_t *line) {
+	int offset = blockNum * 16;
+	for (int i = 0; i < 16*16; i++) {
+		line[offset + i % 16 + i / 16 * 1920] = (uint8_t) iblock[i];
+	}
+}
+
+void copy_half_iblock_to_line(int *iblock, int blockNum, uint8_t *line) {
+	int offset = blockNum * 16;
+	for (int i = 0; i < 16*8; i++) {
+		line[offset + i % 16 + i / 16 * 1920] = (uint8_t) iblock[i];
 	}
 }
 
@@ -52,6 +74,10 @@ void writter_coder() {
 	int k = 0;
 	int fl = 0;
 
+	FILE *test = fopen("../files/test.yuv", "wb");
+	// Одна линия из 120 блоков
+	uint8_t *line = (uint8_t *) malloc(sizeof(uint8_t) * 16 * VIDEO_WIDTH);
+
 	for (int j = 0; j < 1080 / 16; j++) {
 		for (int i = 0; i < 1920 / 16; i++) {
 			int start = i * 16 + j * 16 * 1920;
@@ -62,14 +88,22 @@ void writter_coder() {
 
 			// Кодируем блок и пишем его в файл data
 			DCT_16x16(block);
+			quatizeBlock(block);
+			
+			dequatizeBlock(block);
+			IDCT_16x16( block, iblock );
+
+			copy_iblock_to_line(iblock, i, line);
 			fwrite(block, sizeof(int), 16*16, out);
 		}
+
+		fwrite(line, sizeof(uint8_t), 16*VIDEO_WIDTH, test);
 	}
 
 	// Дозаполняем оставшиеся блоки кодируем их и пишем в файл
 	int startLast = 1920 * (1080 - 8);
 
-	for (int i = 0; i < 1080 / 16; i++) {
+	for (int i = 0; i < 1920 / 16; i++) {
 		int start = startLast + i * 16;
 
 		// копируем половину блока
@@ -84,9 +118,19 @@ void writter_coder() {
 			block[k++] = block[startI + i % 16];
 		}
 
-		DCT_16x16(block);
+
+		DCT_16x16( block );
+
+		quatizeBlock(block);
+
+		IDCT_16x16( block, iblock );
+
+		copy_iblock_to_line(iblock, i, line);
+
 		fwrite(block, sizeof(int), 16*16, out);
 	}
+
+	fwrite(line, sizeof(uint8_t), 16*VIDEO_WIDTH / 2, test);
 
 	// Записываем цветовые компоненты видео в файл
 	fwrite(frame->u, sizeof(int), FRAME_SIZE / 4, out);
@@ -94,12 +138,18 @@ void writter_coder() {
 
 	fclose(out);
 
+	// Записываем цветовые составляещие в тестовый файл
+	fwrite(frame->u, sizeof(int), FRAME_SIZE / 4, test);
+	fwrite(frame->v, sizeof(int), FRAME_SIZE / 4, test);
+	fclose(test);
+
     // Сохраняем кадр как отдельное видео для теста 
-	// out = fopen("../files/video.yuv", "wb");
-	// fwrite(&frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, out);
+	FILE *file = fopen("../files/video.yuv", "wb");
+	int written = fwrite(frame, sizeof(uint8_t), FRAME_SIZE + FRAME_SIZE / 2, file);
+	printf("Written %d\n\n", written);
+	fclose(file);
 
-	fclose(out);
+	free(line);
 	free(frame);
-
 	printf("\n--------------\n");
 }

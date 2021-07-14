@@ -19,7 +19,7 @@ int main( void )
 	 * Обратная последовательность действий
 	 * Деквантование, декдорирование, сохранение в видеофайл с одним кадром
 	 */
-	reader_decode();
+	// reader_decode();
 
 
 	// Пример работы с блоком
@@ -28,7 +28,7 @@ int main( void )
 	int i;
 
 
-	printf("The simple block DCT, IDCT example\n");
+	printf("The simple block DCT, IDCT example.\n");
 	for( i = 0; i < 16*16; i++ ) {
 		block[i] = i;
 	}
