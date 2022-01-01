@@ -233,6 +233,7 @@ void IDCT_16x16(int *coef, int *block) {
     IDCT16x(&coef[i * 16], &block[i * 16]);
 }
 
+// Show block on the screen
 void show(int *x) {
   int i;
 
