@@ -4,7 +4,8 @@ coding
 .vscode
 testing
 build
-files
+files/*
+!files/Readme.md
 
 # Cmake ignoring 
 CMakeLists.txt.user

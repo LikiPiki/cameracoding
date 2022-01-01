@@ -7,7 +7,8 @@
 
 ## Тестовые файлы
 
-Для тестового видео можно использовать любое видео с сайта http://ultravideo.fi/#testsequences со следующими параметрами:
+Для тестового видео можно использовать любое видео с сайта
+http://ultravideo.fi/#testsequences со следующими параметрами:
 
 Видео Bosphorus
 - Resolution: 1080p
@@ -15,16 +16,17 @@
 - Format: YUV
 - Container: RAW
 
-Файл нужно положить в `./files/video1.yuv`. Для просмотра видео можно использовать программу [YUView](https://github.com/IENT/YUView) (кросплатформенная).
+Файл нужно положить в `./files/video1.yuv`. Для просмотра видео можно использовать программу
+[YUView](https://github.com/IENT/YUView) (кросплатформенная).
 
 ## Сборка
 
 Для сборки используется `cmake`.
 
-```
-cd build
+```bash
+mkdir build && cd build
 cmake ..
-make
+make -j$(nproc)
 ./coding # запуск
 ```
 
