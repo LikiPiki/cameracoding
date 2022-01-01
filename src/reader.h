@@ -14,5 +14,4 @@ typedef struct {
   int v[FRAME_SIZE / 4];
 } data_frame;
 
-void reader_decode();
 void read_data_file(FILE *fp, data_frame *frame);

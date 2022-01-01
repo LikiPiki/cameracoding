@@ -5,19 +5,13 @@
 #include "reader.h"
 #include "writter.h"
 
-int main(void) {
+int main() {
   /*
-   * Чтение бинарного видеофайла -- http://ultravideo.fi/#testsequences
+   * Чтение бинарного видеофайла -- video.yuv
    * Bosphorus 1080ю 8bit, YUV, RAW
    * Кодирование, квантование и запись в data файл
    */
   writter_coder();
-
-  /*
-   * Обратная последовательность действий
-   * Деквантование, декдорирование, сохранение в видеофайл с одним кадром
-   */
-  /* reader_decode(); */
 
   // Пример работы с блоком
   int block[16 * 16];
