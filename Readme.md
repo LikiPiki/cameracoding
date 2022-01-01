@@ -24,7 +24,7 @@ http://ultravideo.fi/#testsequences со следующими параметра
 Для сборки используется `cmake`.
 
 ```bash
-mkdir build && cd build
+cd build
 cmake ..
 make -j$(nproc)
 ./coding # запуск
