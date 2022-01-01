@@ -8,11 +8,9 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 include(${CMAKE_SOURCE_DIR}/src/src.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/src/src.cmake)
 
-find_package(GTest REQUIRED)
-
-include_directories(${GTEST_INCLUDE_DIRS})
+set(BUILD_GMOCK OFF CACHE BOOL "")
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../googletest gtest)
 
 add_executable(${PROJECT_NAME} ${SRC} ${SRC_TEST})
 
-target_link_libraries(${PROJECT_NAME} ${GTEST_LIBRARIES} pthread m)
-
+target_link_libraries(${PROJECT_NAME} gtest pthread m)
