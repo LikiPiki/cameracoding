@@ -1,35 +1,30 @@
-#include <stdint.h>
 #include <stdio.h>
 
-#include "dct.h"
-#include "reader.h"
-#include "writter.h"
+#include "file_manager.h"
+#include "data_frame.h"
 
-int main() {
-  /*
-   * Чтение бинарного видеофайла -- video.yuv
-   * Bosphorus 1080ю 8bit, YUV, RAW
-   * Кодирование, квантование и запись в data файл
-   */
-  writter_coder();
 
-  // Пример работы с блоком
-  int block[16 * 16];
-  int iblock[16 * 16];
-  int i;
+#define MAIN_INPUT_VIDEO_FILENAME ("../files/bosphorus.yuv")
+#define MAIN_OUTPUT_VIDEO_FILENAME ("../files/out.yuv")
 
-  printf("The simple block DCT, IDCT example.\n");
-  for (i = 0; i < 16 * 16; i++) {
-    block[i] = i;
-  }
+int main(int argc, char *argv[]) {
+    printf("Hello cameracoding\n");
 
-  show(block);
+    FILE* file_in = file_manager_open_file(MAIN_INPUT_VIDEO_FILENAME, FILE_MANAGER_MODE_READ_BINARY);
+    FILE* file_out = file_manager_open_file(MAIN_OUTPUT_VIDEO_FILENAME, FILE_MANAGER_MODE_WRITE_BINARY);
 
-  DCT_16x16(block);
+    data_frame* frame = data_frame_init();
 
-  IDCT_16x16(block, iblock);
+    file_manager_read_frame(file_in, frame);
 
-  show(iblock);
+    file_manager_write_frame(file_out, frame);
 
-  return 0;
+    data_frame_destroy(frame);
+
+    file_manager_close_file(file_in);
+    file_manager_close_file(file_out);
+
+
+    return 0;
 }
+

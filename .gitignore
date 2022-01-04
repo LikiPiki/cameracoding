@@ -2,6 +2,7 @@
 coding
 .DS_Store
 .vscode
+.cache
 testing
 build
 files/*
