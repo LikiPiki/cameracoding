@@ -7,7 +7,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 include(${CMAKE_CURRENT_LIST_DIR}/src/src.cmake)
 
-# add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 
 add_executable(${PROJECT_NAME} ${SRC} ${CMAKE_CURRENT_LIST_DIR}/src/main.c)
 
