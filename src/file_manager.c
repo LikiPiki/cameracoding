@@ -25,14 +25,15 @@ void file_manager_close_file(FILE* file) {
     fclose(file);
 }
 
-void file_manager_read_frame(FILE* file, data_frame* frame) {
+uint8_t file_manager_read_frame(FILE* file, data_frame* frame) {
     if (fread(frame, sizeof(data_frame), 1, file) != 1) {
         if (feof(file)) {
-            logger_log("Premature end of file while reading frame");
+            return 0;
         } else {
             logger_log_and_exit("File read frame error");
         }
     }
+    return 1;
 }
 
 void file_manager_write_frame(FILE* file, data_frame* frame) {

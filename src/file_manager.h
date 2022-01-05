@@ -14,7 +14,7 @@ FILE* file_manager_open_file(const char* filename, const char* mode);
 
 void file_manager_close_file(FILE* file);
 
-void file_manager_read_frame(FILE* file, data_frame* frame);
+uint8_t file_manager_read_frame(FILE* file, data_frame* frame);
 
 void file_manager_write_frame(FILE* file, data_frame* frame);
 
