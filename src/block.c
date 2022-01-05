@@ -87,3 +87,22 @@ void block_run_idct(int_block* ibl, block* bl) {
     block_copy_ibl_to_bl(&temp, bl);
 }
 
+
+blocks* blocks_init() {
+    blocks* bls = (blocks*)malloc(sizeof(blocks));
+
+    if (bls == NULL) {
+        logger_log_and_exit("Cannot allocate memory for blocks");
+    }
+
+    return bls;
+}
+
+void blocks_destroy(blocks* bls) {
+    if (bls == NULL) {
+        logger_log("Cannot destroy empty blocks");
+        return;
+    }
+
+    free(bls);
+}

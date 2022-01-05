@@ -20,8 +20,27 @@ int main(int argc, char *argv[]) {
      * Bosphorus 1080ю 8bit, YUV, RAW
      * Кодирование, квантование и запись в data файл
      */
-
     file_manager_read_frame(file_in, frame);
+
+    blocks* bls = blocks_init();
+    data_frame_to_blocks(frame, bls);
+
+    printf("------------------\n");
+    block_show(&bls->y.matrix[0][0]);
+    printf("------------------\n");
+    block_show(&bls->y.matrix[67][119]);
+
+    printf("------------------\n");
+    block_show(&bls->u.matrix[0][0]);
+    printf("------------------\n");
+    block_show(&bls->u.matrix[33][59]);
+
+    printf("------------------\n");
+    block_show(&bls->v.matrix[0][0]);
+    printf("------------------\n");
+    block_show(&bls->v.matrix[33][59]);
+
+    blocks_destroy(bls);
 
     file_manager_write_frame(file_out, frame);
 
