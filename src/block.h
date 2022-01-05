@@ -57,11 +57,13 @@ typedef struct {
 
 int_block* block_int_init();
 
+void block_int_copy(int_block* src, int_block* dest);
+
 void block_int_destroy(int_block* bl);
 
 void block_int_show(int_block* bl);
 
-void block_run_dct(block* bl, int_block *ibl);
+void block_run_dct(block* bl, int_block* ibl);
 
 void block_run_idct(int_block *ibl, block* bl);
 
@@ -91,3 +93,38 @@ typedef struct {
 blocks* blocks_init();
 
 void blocks_destroy(blocks* bls);
+
+/**
+ * Кадр разделенный на интовые блоки
+ *
+ * Для того чтобы использовать преобразования 
+ */
+typedef struct {
+    union {
+        struct {
+            union {
+                int_block matrix[BLOCKS_Y_HEIGHT][BLOCKS_Y_WIDTH];
+                int_block line[BLOCKS_Y_SIZE];
+            } y;
+            union {
+                int_block matrix[BLOCKS_U_HEIGHT][BLOCKS_U_WIDTH];
+                int_block line[BLOCKS_U_SIZE];
+            } u;
+            union {
+                int_block matrix[BLOCKS_V_HEIGHT][BLOCKS_V_WIDTH];
+                int_block line[BLOCKS_V_SIZE];
+            } v;
+        };
+        int_block line[BLOCKS_YUV_SIZE];
+    };
+} int_blocks;
+
+int_blocks* blocks_int_init();
+
+void blocks_int_destroy(int_blocks* ibls);
+
+void blocks_run_dct(blocks* bl, int_blocks* ibl);
+
+void blocks_run_idct(int_blocks *ibl, blocks* bl);
+
+

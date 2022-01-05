@@ -53,4 +53,7 @@ void data_frame_destroy(data_frame* frame);
  */
 void data_frame_to_blocks(data_frame* frame, blocks* bls);
 
+/**
+ * Обратное преобразование блоков в кадр
+ */
 void data_frame_from_blocks(blocks* bls, data_frame* frame);

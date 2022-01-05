@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdio.h>
 
 #define shiftr(x, n) ((x + (1 << (n - 1))) >> n)

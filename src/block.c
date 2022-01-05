@@ -15,6 +15,12 @@ block* block_init() {
     return bl;
 }
 
+void block_int_copy(int_block* src, int_block* dest) {
+    for (size_t i = 0; i < BLOCK_SIZE; i++) {
+        dest->line[i] = src->line[i]; 
+    }
+}
+
 void block_destroy(block* bl) {
     if (bl == NULL) {
         logger_log("Cannot destroy empty block");
@@ -105,4 +111,35 @@ void blocks_destroy(blocks* bls) {
     }
 
     free(bls);
+}
+
+int_blocks* blocks_int_init() {
+    int_blocks* ibls = (int_blocks*)malloc(sizeof(int_blocks));
+
+    if (ibls == NULL) {
+        logger_log_and_exit("Cannot allocate memory for int blocks");
+    }
+
+    return ibls;
+}
+
+void blocks_int_destroy(int_blocks *ibls) {
+    if (ibls == NULL) {
+        logger_log("Cannot destroy empty int blocks");
+        return;
+    }
+
+    free(ibls);
+}
+
+void blocks_run_dct(blocks* bl, int_blocks* ibl) {
+    for (size_t i = 0; i < BLOCKS_YUV_SIZE; i++) {
+        block_run_dct(&bl->line[i], &ibl->line[i]);
+    }
+}
+
+void blocks_run_idct(int_blocks *ibl, blocks* bl) {
+    for (size_t i = 0; i < BLOCKS_YUV_SIZE; i++) {
+        block_run_idct(&ibl->line[i], &bl->line[i]);
+    }
 }

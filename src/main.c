@@ -3,8 +3,8 @@
 #include "file_manager.h"
 #include "data_frame.h"
 #include "block.h"
-
-#include "dct.h"
+#include "quantize.h"
+#include "zigzag.h"
 
 #define MAIN_INPUT_VIDEO_FILENAME ("../files/bosphorus.yuv")
 #define MAIN_OUTPUT_VIDEO_FILENAME ("../files/out.yuv")
@@ -23,27 +23,27 @@ int main(int argc, char *argv[]) {
     file_manager_read_frame(file_in, frame);
 
     blocks* bls = blocks_init();
+    int_blocks* ibls = blocks_int_init();
     data_frame_to_blocks(frame, bls);
 
-    printf("------------------\n");
-    block_show(&bls->y.matrix[0][0]);
-    printf("------------------\n");
-    block_show(&bls->y.matrix[67][119]);
+    blocks_run_dct(bls, ibls);
 
-    printf("------------------\n");
-    block_show(&bls->u.matrix[0][0]);
-    printf("------------------\n");
-    block_show(&bls->u.matrix[33][59]);
+    quantize_int_blocks(ibls, QUANTIZE_DEFAULT_LEVEL);
 
-    printf("------------------\n");
-    block_show(&bls->v.matrix[0][0]);
-    printf("------------------\n");
-    block_show(&bls->v.matrix[33][59]);
+    zigzag_int_blocks(ibls);
+
+    zigzag_inverse_int_blocks(ibls);
+
+    quantize_inverse_int_blocks(ibls, QUANTIZE_DEFAULT_LEVEL);
+
+    blocks_run_idct(ibls, bls);
+
+    data_frame_from_blocks(bls, frame);
 
     blocks_destroy(bls);
+    blocks_int_destroy(ibls);
 
     file_manager_write_frame(file_out, frame);
-
     data_frame_destroy(frame);
 
     file_manager_close_file(file_in);
