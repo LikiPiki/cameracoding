@@ -36,7 +36,7 @@ TEST(run_level, simple_run_level) {
         ibl.line[i] = test_block_data[i];
     }
 
-    run_level_run(&ibl, &rlibl);
+    run_level_run_block(&ibl, &rlibl);
 
     ASSERT_EQ(rlibl.size, 2);
 
@@ -74,7 +74,7 @@ TEST(run_level, last_item_not_null) {
         ibl.line[i] = test_block_data[i];
     }
 
-    run_level_run(&ibl, &rlibl);
+    run_level_run_block(&ibl, &rlibl);
 
     ASSERT_EQ(rlibl.size, 4);
 
@@ -112,7 +112,7 @@ TEST(run_level, items_in_center_not_null) {
         ibl.line[i] = test_block_data[i];
     }
 
-    run_level_run(&ibl, &rlibl);
+    run_level_run_block(&ibl, &rlibl);
 
     ASSERT_EQ(rlibl.size, 10);
 
@@ -153,7 +153,7 @@ TEST(run_level, inverse_simple) {
 
     int_block ibl;
 
-    run_level_inverse_run(&rlibl, &ibl);
+    run_level_inverse_run_block(&rlibl, &ibl);
 
     for (size_t i = 0; i < BLOCK_SIZE; i++) {
         ASSERT_EQ(ibl.line[i], expected[i]);
@@ -192,7 +192,7 @@ TEST(run_level, inverse_block_more_zeros) {
 
     int_block ibl;
 
-    run_level_inverse_run(&rlibl, &ibl);
+    run_level_inverse_run_block(&rlibl, &ibl);
 
     for (size_t i = 0; i < BLOCK_SIZE; i++) {
         ASSERT_EQ(ibl.line[i], expected[i]);

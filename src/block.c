@@ -143,3 +143,4 @@ void blocks_run_idct(int_blocks *ibl, blocks* bl) {
         block_run_idct(&ibl->line[i], &bl->line[i]);
     }
 }
+

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "data_frame.h"
+#include "run_level.h"
 
-/**
- * Обработка одного кадра видеопотока
- */
-void core_process_frame(data_frame* frame);
 
+void core_process_encode(data_frame* frame, run_level_int_blocks* rlibls);
+
+void core_process_decode(run_level_int_blocks* rlibls, data_frame* frame);
