@@ -7,10 +7,10 @@
 
 // Логирование ошибок
 void logger_log(const char* message) {
-    printf("[LOG] %s: %s\n", strerror(errno), message);
+    printf("[LOG] %s\n", message);
 }
 
 void logger_log_and_exit(const char* message) {
-    logger_log(message);
+    printf("[ERR] %s: %s\n", strerror(errno), message);
     exit(errno);
 }
