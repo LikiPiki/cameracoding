@@ -49,12 +49,12 @@ void run_level_run(int_block* bl, run_level_int_block* rlibl) {
 }
 
 void run_level_inverse_run(run_level_int_block* rlibl, int_block* bl) {
-    size_t j = 0;
+    size_t k = 0;
 
     for (size_t i = 0; i < rlibl->size; i += 2) {
-        bl->line[j++] = rlibl->line[i];
+        bl->line[k++] = rlibl->line[i];
 
         for (size_t j = 0; j < rlibl->line[i + 1]; j++)
-            bl->line[j++] = 0;
+            bl->line[k++] = 0;
     }
 }
