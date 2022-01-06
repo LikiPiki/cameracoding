@@ -1,7 +1,9 @@
+#include <stdio.h>
+
 #include "quantize.h"
 
 void quantize_int_block(int_block *ibl, int32_t level) {
-    for (size_t i = 0; i < BLOCK_SIZE; i++) {
+    for (size_t i = 1; i < BLOCK_SIZE; i++) {
         ibl->line[i] /= level;
     }
 }
@@ -13,7 +15,7 @@ void quantize_int_blocks(int_blocks *ibls, int32_t level) {
 }
 
 void quantize_inverse_int_block(int_block *ibl, int32_t level) {
-    for (size_t i = 0; i < BLOCK_SIZE; i++) {
+    for (size_t i = 1; i < BLOCK_SIZE; i++) {
         ibl->line[i] *= level;
     }
 }

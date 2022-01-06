@@ -34,10 +34,7 @@ FILE* file_manager_open_file(const char* filename, const char* mode) {
     FILE *file = fopen(filename, mode);
 
     if (file == NULL) {
-        char error_message[LOGGER_MESSAGE_SIZE];
-        snprintf(error_message, LOGGER_MESSAGE_SIZE, "Cannot open %s file", filename);
-
-        logger_log_and_exit(error_message);
+        logger_log_and_exit("Cannot open %s file", filename);
     }
 
     return file;
@@ -70,7 +67,7 @@ void file_manager_write_frame(FILE* file, data_frame* frame) {
     }
 }
 
-void file_manager_write_compressed(FILE* file, run_level_int_blocks* rlibls) {
+size_t file_manager_write_compressed(FILE* file, run_level_int_blocks* rlibls) {
     size_t buffer_size = 0;
     for (size_t i = 0; i < BLOCKS_YUV_SIZE; i++) {
         buffer_size += rlibls->line[i].size;
@@ -89,6 +86,8 @@ void file_manager_write_compressed(FILE* file, run_level_int_blocks* rlibls) {
     }
 
     free(buffer);
+
+    return buffer_size * sizeof(int);
 }
 
 uint8_t file_manager_read_compressed(FILE* file, run_level_int_blocks* rlibls, compressed_buffer *cb) {

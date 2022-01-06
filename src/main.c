@@ -4,6 +4,7 @@
 #include "file_manager.h"
 #include "data_frame.h"
 #include "core.h"
+#include "logger.h"
 
 #define MAIN_INPUT_VIDEO_FILENAME ("../files/bosphorus.yuv")
 #define MAIN_OUTPUT_VIDEO_FILENAME ("../files/out.yuv")
@@ -18,13 +19,16 @@ int main(int argc, char *argv[]) {
     run_level_int_blocks* rlibls = run_level_int_blocks_init();
     compressed_buffer *buffer = file_manager_compressed_buffer_init(FILE_MANAGER_BUFFER_DEFAULT_SIZE);
 
+    size_t counter = 0;
     while (file_manager_read_frame(file_in, frame)) {
         core_process_encode(frame, rlibls);
-        file_manager_write_compressed(file_compressed, rlibls);
+        size_t compressed_frame_size = file_manager_write_compressed(file_compressed, rlibls);
+        logger_log_compressed_frame(++counter, sizeof(data_frame), compressed_frame_size);
     }
 
     file_manager_close_file(file_compressed);
     file_compressed = file_manager_open_file(MAIN_COMPRESSED_FILENAME, FILE_MANAGER_MODE_READ_BINARY);
+
 
     while (file_manager_read_compressed(file_compressed, rlibls, buffer)) {
         core_process_decode(rlibls, frame);

@@ -30,6 +30,6 @@ uint8_t file_manager_read_frame(FILE* file, data_frame* frame);
 
 void file_manager_write_frame(FILE* file, data_frame* frame);
 
-void file_manager_write_compressed(FILE* file, run_level_int_blocks* rlibls);
+size_t file_manager_write_compressed(FILE* file, run_level_int_blocks* rlibls);
 
 uint8_t file_manager_read_compressed(FILE* file, run_level_int_blocks* rlibls, compressed_buffer* buffer);
