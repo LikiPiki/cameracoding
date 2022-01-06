@@ -1,6 +1,7 @@
 set(SRC
 	${CMAKE_CURRENT_LIST_DIR}/file_manager.c
 	${CMAKE_CURRENT_LIST_DIR}/data_frame.c
+	${CMAKE_CURRENT_LIST_DIR}/run_level.c
 	${CMAKE_CURRENT_LIST_DIR}/quantize.c
 	${CMAKE_CURRENT_LIST_DIR}/zigzag.c
 	${CMAKE_CURRENT_LIST_DIR}/logger.c
