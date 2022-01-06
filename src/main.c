@@ -19,20 +19,25 @@ int main(int argc, char *argv[]) {
     run_level_int_blocks* rlibls = run_level_int_blocks_init();
     compressed_buffer *buffer = file_manager_compressed_buffer_init(FILE_MANAGER_BUFFER_DEFAULT_SIZE);
 
-    size_t counter = 0;
+    size_t frame_counter = 0;
+    logger_log("Start encoding video file");
     while (file_manager_read_frame(file_in, frame)) {
         core_process_encode(frame, rlibls);
+
+        // Логирование сжатия файла
         size_t compressed_frame_size = file_manager_write_compressed(file_compressed, rlibls);
-        logger_log_compressed_frame(++counter, sizeof(data_frame), compressed_frame_size);
+        logger_log_compressed_frame(++frame_counter, sizeof(data_frame), compressed_frame_size);
     }
 
     file_manager_close_file(file_compressed);
     file_compressed = file_manager_open_file(MAIN_COMPRESSED_FILENAME, FILE_MANAGER_MODE_READ_BINARY);
+    logger_log("Start decoding video file");
 
-
+    frame_counter = 0;
     while (file_manager_read_compressed(file_compressed, rlibls, buffer)) {
         core_process_decode(rlibls, frame);
         file_manager_write_frame(file_out, frame);
+        logger_log("[%3ld] frame decoded", ++frame_counter);
     }
 
     data_frame_destroy(frame);

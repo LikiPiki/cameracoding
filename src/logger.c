@@ -6,7 +6,7 @@
 
 #include "logger.h"
 
-// Логирование ошибок
+// Логирование программных сообщений
 void logger_log(const char* format, ...) {
     va_list args;
     va_start(args, format);
@@ -18,6 +18,7 @@ void logger_log(const char* format, ...) {
     va_end(args);
 }
 
+// Логирование ошибок с последующим выходом
 void logger_log_and_exit(const char* format, ...) {
     va_list args;
     va_start(args, format);

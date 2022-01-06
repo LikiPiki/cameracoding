@@ -2,6 +2,7 @@
 
 #include "zigzag.h"
 #include "quantize.h"
+#include "logger.h"
 
 void core_process_encode(data_frame* frame, run_level_int_blocks* rlibls) {
     blocks* bls = blocks_init();
